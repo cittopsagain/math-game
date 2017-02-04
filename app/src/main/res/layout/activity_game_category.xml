@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Addition"
+        android:id="@+id/btnAddition"
+        android:layout_below="@+id/btnSettings"
+        android:layout_alignStart="@+id/btnSettings"
+        android:layout_alignEnd="@+id/btnSettings"
+        android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chain Sequence"
+        android:id="@+id/btnChainSequence"
+        android:layout_below="@+id/btnNewGame"
+        android:layout_alignStart="@+id/btnNewGame"
+        android:layout_alignEnd="@+id/btnNewGame"
+        android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Symbols"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="62dp"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/btnSymbols" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Subtraction"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="62dp"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/btnSubtraction" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Choose the Category"
+        android:id="@+id/txtCategory"
+        android:layout_gravity="center_horizontal" />
+</LinearLayout>

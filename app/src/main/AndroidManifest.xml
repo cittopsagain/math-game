@@ -15,6 +15,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".GameCategoryActivity"
+            android:label="Choose Category">
+
+        </activity>
+
+        <activity android:name=".AdditionGameActivity"
+            android:label="Addition">
+
+        </activity>
     </application>
 
 </manifest>

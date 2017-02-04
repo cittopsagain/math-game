@@ -9,8 +9,30 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.davetolentin.mathgame.MainActivity">
 
-    <TextView
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:text="New Game"
+        android:id="@+id/btnNewGame"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="62dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Settings"
+        android:id="@+id/btnSettings"
+        android:layout_below="@+id/btnNewGame"
+        android:layout_alignStart="@+id/btnNewGame"
+        android:layout_alignEnd="@+id/btnNewGame" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Exit"
+        android:id="@+id/btnExit"
+        android:layout_below="@+id/btnSettings"
+        android:layout_alignStart="@+id/btnSettings"
+        android:layout_alignEnd="@+id/btnSettings" />
 </RelativeLayout>
