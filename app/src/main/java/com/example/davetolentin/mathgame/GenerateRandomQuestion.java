@@ -19,6 +19,10 @@ public class GenerateRandomQuestion {
             // 9 is the maximum and the 0 is our minimum
             n = this.random.nextInt(9) + 0;
         }
+        if (mode.equals("medium")){
+            // 20 is the maximum and 10 is our minimum
+            n = this.random.nextInt(20) + 10;
+        }
         return n;
     }
 }

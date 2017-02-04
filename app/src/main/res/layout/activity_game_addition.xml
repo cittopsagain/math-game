@@ -52,4 +52,28 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Choices:"
         android:id="@+id/textView" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Choices:"
+        android:id="@+id/txtChoice1" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Choices:"
+        android:id="@+id/txtChoice2" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Choices:"
+        android:id="@+id/txtChoice3" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Choices:"
+        android:id="@+id/txtChoice4" />
 </LinearLayout>
