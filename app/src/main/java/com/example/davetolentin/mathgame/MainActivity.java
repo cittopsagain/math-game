@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (v.getId() == R.id.btnNewGame) {
             Intent intent = new Intent(getApplicationContext(), GameCategoryActivity.class);
             startActivity(intent);
-        } else if (v.getId() == R.id.btnNewGame) {
+        } else if (v.getId() == R.id.btnSettings) {
 
         } else {
 
