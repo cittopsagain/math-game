@@ -21,4 +21,19 @@ public class SessionManager {
         sharedPreferences = context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = sharedPreferences.edit();
     }
+
+    public void setLevel(String level) {
+        editor.putString("keyLevel", level);
+        editor.commit();
+    }
+
+    public void setAttempt(int attempt) {
+        editor.putInt("keyAttempt", attempt);
+        editor.commit();
+    }
+
+    public void setRank(String rank) {
+        editor.putString("keyRank", rank);
+        editor.commit();
+    }
 }

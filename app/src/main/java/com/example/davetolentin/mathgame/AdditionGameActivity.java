@@ -1,11 +1,13 @@
 package com.example.davetolentin.mathgame;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,17 +19,22 @@ import java.util.List;
 public class AdditionGameActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Questions questions;
+    private SessionManager sessionManager;
+    private SharedPreferences sharedPreferences;
+    private DialogHelper dialogHelper;
     private int num;
     private int exactAnswer;
-    private String level;
+    private int remainingAttempt;
+    private int ctr = 0;
 
     private TextView txtNum1;
     private TextView txtNum2;
     private TextView txtAnswer;
-    private TextView txtchoice1;
-    private TextView txtchoice3;
-    private TextView txtchoice2;
-    private TextView txtchoice4;
+    private TextView txtChoice1;
+    private TextView txtChoice2;
+    private TextView txtChoice3;
+    private TextView txtChoice4;
+    private TextView txtAttempt;
 
     List<Integer> indexes = new ArrayList<>(3);
 
@@ -39,24 +46,37 @@ public class AdditionGameActivity extends AppCompatActivity implements View.OnCl
         txtNum1 = (TextView) findViewById(R.id.txtNum1);
         txtNum2 = (TextView) findViewById(R.id.txtNum2);
         txtAnswer = (TextView) findViewById(R.id.txtAnswer);
-        txtchoice1 = (TextView) findViewById(R.id.txtChoice1);
-        txtchoice2 = (TextView) findViewById(R.id.txtChoice2);
-        txtchoice3 = (TextView) findViewById(R.id.txtChoice3);
-        txtchoice4 = (TextView) findViewById(R.id.txtChoice4);
+        txtChoice1 = (TextView) findViewById(R.id.txtChoice1);
+        txtChoice2 = (TextView) findViewById(R.id.txtChoice2);
+        txtChoice3 = (TextView) findViewById(R.id.txtChoice3);
+        txtChoice4 = (TextView) findViewById(R.id.txtChoice4);
+        txtAttempt = (TextView) findViewById(R.id.txtAttempt);
 
         txtNum1.setOnClickListener(this);
         txtNum2.setOnClickListener(this);
         txtAnswer.setOnClickListener(this);
-        txtchoice1.setOnClickListener(this);
-        txtchoice2.setOnClickListener(this);
-        txtchoice3.setOnClickListener(this);
-        txtchoice4.setOnClickListener(this);
+        txtChoice1.setOnClickListener(this);
+        txtChoice2.setOnClickListener(this);
+        txtChoice3.setOnClickListener(this);
+        txtChoice4.setOnClickListener(this);
 
         questions = new Questions();
-        num = questions.generateRandomNumbers("easy");
+        sessionManager = new SessionManager(getApplicationContext());
+        sharedPreferences = getSharedPreferences("LaundryShop", Context.MODE_PRIVATE);
+        dialogHelper = new DialogHelper(AdditionGameActivity.this);
+
+        if (sharedPreferences.getString("keyLevel", "").equals("")) {
+            // first level of the game
+            num = questions.generateRandomNumbers("easy");
+        } else {
+            num = questions.generateRandomNumbers(sharedPreferences.getString("keyLevel", ""));
+        }
 
         txtNum1.setText(String.valueOf(num));
         txtNum2.setText(String.valueOf(num));
+        txtAttempt.setText(String.valueOf(questions.maxAttempt()));
+
+        remainingAttempt = Integer.parseInt(txtAttempt.getText().toString());
 
         exactAnswer = Integer.parseInt(txtNum1.getText().toString()) +
                 Integer.parseInt(txtNum2.getText().toString());
@@ -68,46 +88,222 @@ public class AdditionGameActivity extends AppCompatActivity implements View.OnCl
 
         Collections.shuffle(indexes);
 
-        txtchoice1.setText(Integer.toString(indexes.get(0)));
-        txtchoice2.setText(Integer.toString(indexes.get(1)));
-        txtchoice3.setText(Integer.toString(indexes.get(2)));
-        txtchoice4.setText(Integer.toString(indexes.get(3)));
+        txtChoice1.setText(Integer.toString(indexes.get(0)));
+        txtChoice2.setText(Integer.toString(indexes.get(1)));
+        txtChoice3.setText(Integer.toString(indexes.get(2)));
+        txtChoice4.setText(Integer.toString(indexes.get(3)));
     }
 
     @Override
     public void onClick(View v) {
-        switch(v.getId()){
+        switch(v.getId()) {
         case R.id.txtChoice1 :
-                if (txtchoice1.getText().toString() == Integer.toString(exactAnswer)) {
-                    txtAnswer.setText(Integer.toString(exactAnswer));
+            if (txtChoice1.getText().toString() == Integer.toString(exactAnswer)) {
+                txtAnswer.setText(Integer.toString(exactAnswer));
+            } else {
+                txtChoice1.setText("X");
+                if (ctr++ == 1) {
+                    remainingAttempt -= 1;
+                    txtAttempt.setText(String.valueOf(remainingAttempt));
+                    dialogHelper.showDialog("Alert", "Play again", "Cancel", "You already" +
+                                    " used all your attempts", false,
+                            new DialogHelper.AlertDialogListener<Integer>() {
+                                @Override
+                                public void onSuccess(int t) {
+                                    if (t == 1) {
+                                        // Play again
+                                        txtAttempt.setText(String.valueOf(questions.maxAttempt()));
+                                        txtNum1.setText(String.valueOf(
+                                                questions.generateRandomNumbers("easy")
+                                        ));
+                                        txtNum2.setText(String.valueOf(
+                                                questions.generateRandomNumbers("easy"))
+                                        );
+                                        exactAnswer = Integer.parseInt(txtNum1.getText().toString())
+                                                + Integer.parseInt(txtNum2.getText().toString());
+                                        for (int i = 0; i < 4; i++) {
+                                            indexes.add(questions.dummyChoices(exactAnswer));
+                                        }
+                                        indexes.set(3, exactAnswer);
+
+                                        Collections.shuffle(indexes);
+
+                                        txtChoice1.setText(Integer.toString(indexes.get(0)));
+                                        txtChoice2.setText(Integer.toString(indexes.get(1)));
+                                        txtChoice3.setText(Integer.toString(indexes.get(2)));
+                                        txtChoice4.setText(Integer.toString(indexes.get(3)));
+
+                                        remainingAttempt = questions.maxAttempt();
+                                        ctr = 0;
+                                    } else {
+                                        // Cancel
+                                        Intent intent = new Intent(getApplicationContext(),
+                                                GameCategoryActivity.class);
+                                        startActivity(intent);
+                                    }
+                                }
+                            });
                 } else {
-                    Toast.makeText(getApplicationContext(), "Sorry wrong answer",
-                            Toast.LENGTH_LONG).show();
+                    remainingAttempt -= 1;
+                    txtAttempt.setText(String.valueOf(remainingAttempt));
                 }
+            }
             break;
         case R.id.txtChoice2 :
-                if (txtchoice2.getText().toString() == Integer.toString(exactAnswer)) {
-                    txtAnswer.setText(Integer.toString(exactAnswer));
+            if (txtChoice2.getText().toString() == Integer.toString(exactAnswer)) {
+                txtAnswer.setText(Integer.toString(exactAnswer));
+            } else {
+                txtChoice2.setText("X");
+                if (ctr++ == 1) {
+                    remainingAttempt -= 1;
+                    txtAttempt.setText(String.valueOf(remainingAttempt));
+                    dialogHelper.showDialog("Alert", "Play again", "Cancel", "You already" +
+                                    " used all your attempts", false,
+                            new DialogHelper.AlertDialogListener<Integer>() {
+                                @Override
+                                public void onSuccess(int t) {
+                                    if (t == 1) {
+                                        // Play again
+                                        txtAttempt.setText(String.valueOf(questions.maxAttempt()));
+                                        txtNum1.setText(String.valueOf(
+                                                questions.generateRandomNumbers("easy")
+                                        ));
+                                        txtNum2.setText(String.valueOf(
+                                                questions.generateRandomNumbers("easy"))
+                                        );
+                                        exactAnswer = Integer.parseInt(txtNum1.getText().toString())
+                                                + Integer.parseInt(txtNum2.getText().toString());
+                                        for (int i = 0; i < 4; i++) {
+                                            indexes.add(questions.dummyChoices(exactAnswer));
+                                        }
+                                        indexes.set(3, exactAnswer);
+
+                                        Collections.shuffle(indexes);
+
+                                        txtChoice1.setText(Integer.toString(indexes.get(0)));
+                                        txtChoice2.setText(Integer.toString(indexes.get(1)));
+                                        txtChoice3.setText(Integer.toString(indexes.get(2)));
+                                        txtChoice4.setText(Integer.toString(indexes.get(3)));
+
+                                        remainingAttempt = questions.maxAttempt();
+                                        ctr = 0;
+                                    } else {
+                                        // Cancel
+                                        Intent intent = new Intent(getApplicationContext(),
+                                                GameCategoryActivity.class);
+                                        startActivity(intent);
+                                    }
+                                }
+                            });
                 } else {
-                    Toast.makeText(getApplicationContext(), "Sorry wrong answer",
-                            Toast.LENGTH_LONG).show();
+                    remainingAttempt -= 1;
+                    txtAttempt.setText(String.valueOf(remainingAttempt));
                 }
+            }
             break;
         case R.id.txtChoice3 :
-                if (txtchoice3.getText().toString() == Integer.toString(exactAnswer)) {
-                    txtAnswer.setText(Integer.toString(exactAnswer));
+            if (txtChoice3.getText().toString() == Integer.toString(exactAnswer)) {
+                txtAnswer.setText(Integer.toString(exactAnswer));
+            } else {
+                txtChoice3.setText("X");
+                if (ctr++ == 1) {
+                    remainingAttempt -= 1;
+                    txtAttempt.setText(String.valueOf(remainingAttempt));
+                    dialogHelper.showDialog("Alert", "Play again", "Cancel", "You already" +
+                                    " used all your attempts", false,
+                            new DialogHelper.AlertDialogListener<Integer>() {
+                                @Override
+                                public void onSuccess(int t) {
+                                    if (t == 1) {
+                                        // Play again
+                                        txtAttempt.setText(String.valueOf(questions.maxAttempt()));
+                                        txtNum1.setText(String.valueOf(
+                                                questions.generateRandomNumbers("easy")
+                                        ));
+                                        txtNum2.setText(String.valueOf(
+                                                questions.generateRandomNumbers("easy"))
+                                        );
+                                        exactAnswer = Integer.parseInt(txtNum1.getText().toString())
+                                                + Integer.parseInt(txtNum2.getText().toString());
+                                        for (int i = 0; i < 4; i++) {
+                                            indexes.add(questions.dummyChoices(exactAnswer));
+                                        }
+                                        indexes.set(3, exactAnswer);
+
+                                        Collections.shuffle(indexes);
+
+                                        txtChoice1.setText(Integer.toString(indexes.get(0)));
+                                        txtChoice2.setText(Integer.toString(indexes.get(1)));
+                                        txtChoice3.setText(Integer.toString(indexes.get(2)));
+                                        txtChoice4.setText(Integer.toString(indexes.get(3)));
+
+                                        remainingAttempt = questions.maxAttempt();
+                                        ctr = 0;
+                                    } else {
+                                        // Cancel
+                                        Intent intent = new Intent(getApplicationContext(),
+                                                GameCategoryActivity.class);
+                                        startActivity(intent);
+                                    }
+                                }
+                            });
                 } else {
-                    Toast.makeText(getApplicationContext(), "Sorry wrong answer",
-                            Toast.LENGTH_LONG).show();
+                    remainingAttempt -= 1;
+                    txtAttempt.setText(String.valueOf(remainingAttempt));
                 }
+            }
             break;
         case R.id.txtChoice4 :
-                if (txtchoice4.getText().toString() == Integer.toString(exactAnswer)) {
-                    txtAnswer.setText(Integer.toString(exactAnswer));
+            if (txtChoice4.getText().toString() == Integer.toString(exactAnswer)) {
+                txtAnswer.setText(Integer.toString(exactAnswer));
+            } else {
+                txtChoice4.setText("X");
+                if (ctr++ == 1) {
+                    remainingAttempt -= 1;
+                    txtAttempt.setText(String.valueOf(remainingAttempt));
+                    dialogHelper.showDialog("Alert", "Play again", "Cancel", "You already" +
+                                    " used all your attempts", false,
+                            new DialogHelper.AlertDialogListener<Integer>() {
+                                @Override
+                                public void onSuccess(int t) {
+                                    if (t == 1) {
+                                        // Play again
+                                        txtAttempt.setText(String.valueOf(questions.maxAttempt()));
+                                        txtNum1.setText(String.valueOf(
+                                                questions.generateRandomNumbers("easy")
+                                        ));
+                                        txtNum2.setText(String.valueOf(
+                                                questions.generateRandomNumbers("easy"))
+                                        );
+                                        exactAnswer = Integer.parseInt(txtNum1.getText().toString())
+                                                + Integer.parseInt(txtNum2.getText().toString());
+                                        for (int i = 0; i < 4; i++) {
+                                            indexes.add(questions.dummyChoices(exactAnswer));
+                                        }
+                                        indexes.set(3, exactAnswer);
+
+                                        Collections.shuffle(indexes);
+
+                                        txtChoice1.setText(Integer.toString(indexes.get(0)));
+                                        txtChoice2.setText(Integer.toString(indexes.get(1)));
+                                        txtChoice3.setText(Integer.toString(indexes.get(2)));
+                                        txtChoice4.setText(Integer.toString(indexes.get(3)));
+
+                                        remainingAttempt = questions.maxAttempt();
+                                        ctr = 0;
+                                    } else {
+                                        // Cancel
+                                        Intent intent = new Intent(getApplicationContext(),
+                                                GameCategoryActivity.class);
+                                        startActivity(intent);
+                                    }
+                                }
+                            });
                 } else {
-                    Toast.makeText(getApplicationContext(), "Sorry wrong answer",
-                            Toast.LENGTH_LONG).show();
+                    remainingAttempt -= 1;
+                    txtAttempt.setText(String.valueOf(remainingAttempt));
                 }
+            }
             break;
         }
     }

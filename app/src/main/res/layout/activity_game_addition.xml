@@ -74,5 +74,12 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Choices:"
-        android:id="@+id/txtChoice4" />
+        android:id="@+id/txtChoice4"
+        android:layout_below="@+id/txtAddition" />
+
+    <TextView
+        android:text="Attempt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtAttempt" />
 </LinearLayout>

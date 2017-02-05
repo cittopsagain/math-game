@@ -28,9 +28,18 @@ public class Questions {
         return 5;
     }
 
+    public int maxAttempt() {
+        // maximum attempt
+        return 2;
+    }
+
     public int dummyChoices(int exactAnswer) {
-        int n;
-        n = this.random.nextInt(exactAnswer) + 1;
+        int n = 0;
+        try {
+            n = this.random.nextInt(exactAnswer) + 1;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
         return n;
     }
 }
