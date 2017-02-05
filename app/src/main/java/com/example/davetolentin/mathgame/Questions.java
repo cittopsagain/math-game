@@ -42,4 +42,22 @@ public class Questions {
         }
         return n;
     }
+    public int random_answer_position(){
+        int n;
+        n = this.random.nextInt(3) + 0;
+        return  n;
+    }
+    public int[] randomize_choices(int []choiceArray){
+
+        Random rnd = new Random();
+        for (int i = choiceArray.length - 1; i > 0; i--)
+        {
+            int index = rnd.nextInt(i + 1);
+            // Simple swap
+            int a = choiceArray[index];
+            choiceArray[index] = choiceArray[i];
+            choiceArray[i] = a;
+        }
+        return  choiceArray;
+    }
 }

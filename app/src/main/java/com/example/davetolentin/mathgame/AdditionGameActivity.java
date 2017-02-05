@@ -1,5 +1,7 @@
 package com.example.davetolentin.mathgame;
 
+import java.util.Random;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,6 +14,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+
 
 /**
  * Created by Dave Tolentin on 2/4/2017.
@@ -36,7 +41,8 @@ public class AdditionGameActivity extends AppCompatActivity implements View.OnCl
     private TextView txtChoice4;
     private TextView txtAttempt;
 
-    List<Integer> indexes = new ArrayList<>(3);
+
+    private int[] choiceArray = new int[4];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,17 +87,20 @@ public class AdditionGameActivity extends AppCompatActivity implements View.OnCl
         exactAnswer = Integer.parseInt(txtNum1.getText().toString()) +
                 Integer.parseInt(txtNum2.getText().toString());
 
-        for (int i = 0; i < 4; i++) {
-            indexes.add(questions.dummyChoices(exactAnswer));
+        for(int c = 0;c<choiceArray.length-1;c++){
+            choiceArray[c] = exactAnswer + c + 1;
+
         }
-        indexes.set(3, exactAnswer);
+        choiceArray[choiceArray.length-1] = exactAnswer;
+        choiceArray  =  questions.randomize_choices(choiceArray);
 
-        Collections.shuffle(indexes);
 
-        txtChoice1.setText(Integer.toString(indexes.get(0)));
-        txtChoice2.setText(Integer.toString(indexes.get(1)));
-        txtChoice3.setText(Integer.toString(indexes.get(2)));
-        txtChoice4.setText(Integer.toString(indexes.get(3)));
+
+        txtChoice1.setText(Integer.toString(choiceArray[0]));
+        txtChoice2.setText(Integer.toString(choiceArray[1]));
+        txtChoice3.setText(Integer.toString(choiceArray[2]));
+        txtChoice4.setText(Integer.toString(choiceArray[3]));
+
     }
 
     @Override
@@ -121,17 +130,17 @@ public class AdditionGameActivity extends AppCompatActivity implements View.OnCl
                                         );
                                         exactAnswer = Integer.parseInt(txtNum1.getText().toString())
                                                 + Integer.parseInt(txtNum2.getText().toString());
-                                        for (int i = 0; i < 4; i++) {
-                                            indexes.add(questions.dummyChoices(exactAnswer));
+                                        for (int i = 0; i < choiceArray.length; i++) {
+                                            choiceArray[i]= questions.dummyChoices(exactAnswer);
                                         }
-                                        indexes.set(3, exactAnswer);
+                                        choiceArray[choiceArray.length-1] = exactAnswer;
 
-                                        Collections.shuffle(indexes);
+                                        choiceArray = questions.randomize_choices(choiceArray);
 
-                                        txtChoice1.setText(Integer.toString(indexes.get(0)));
-                                        txtChoice2.setText(Integer.toString(indexes.get(1)));
-                                        txtChoice3.setText(Integer.toString(indexes.get(2)));
-                                        txtChoice4.setText(Integer.toString(indexes.get(3)));
+                                        txtChoice1.setText(Integer.toString(choiceArray[0]));
+                                        txtChoice2.setText(Integer.toString(choiceArray[1]));
+                                        txtChoice3.setText(Integer.toString(choiceArray[2]));
+                                        txtChoice4.setText(Integer.toString(choiceArray[3]));
 
                                         remainingAttempt = questions.maxAttempt();
                                         ctr = 0;
@@ -173,17 +182,17 @@ public class AdditionGameActivity extends AppCompatActivity implements View.OnCl
                                         );
                                         exactAnswer = Integer.parseInt(txtNum1.getText().toString())
                                                 + Integer.parseInt(txtNum2.getText().toString());
-                                        for (int i = 0; i < 4; i++) {
-                                            indexes.add(questions.dummyChoices(exactAnswer));
+                                        for (int i = 0; i < choiceArray.length; i++) {
+                                            choiceArray[i]= questions.dummyChoices(exactAnswer);
                                         }
-                                        indexes.set(3, exactAnswer);
+                                        choiceArray[choiceArray.length-1] = exactAnswer;
 
-                                        Collections.shuffle(indexes);
+                                        choiceArray = questions.randomize_choices(choiceArray);
 
-                                        txtChoice1.setText(Integer.toString(indexes.get(0)));
-                                        txtChoice2.setText(Integer.toString(indexes.get(1)));
-                                        txtChoice3.setText(Integer.toString(indexes.get(2)));
-                                        txtChoice4.setText(Integer.toString(indexes.get(3)));
+                                        txtChoice1.setText(Integer.toString(choiceArray[0]));
+                                        txtChoice2.setText(Integer.toString(choiceArray[1]));
+                                        txtChoice3.setText(Integer.toString(choiceArray[2]));
+                                        txtChoice4.setText(Integer.toString(choiceArray[3]));
 
                                         remainingAttempt = questions.maxAttempt();
                                         ctr = 0;
@@ -225,17 +234,17 @@ public class AdditionGameActivity extends AppCompatActivity implements View.OnCl
                                         );
                                         exactAnswer = Integer.parseInt(txtNum1.getText().toString())
                                                 + Integer.parseInt(txtNum2.getText().toString());
-                                        for (int i = 0; i < 4; i++) {
-                                            indexes.add(questions.dummyChoices(exactAnswer));
+                                        for (int i = 0; i < choiceArray.length; i++) {
+                                            choiceArray[i]= questions.dummyChoices(exactAnswer);
                                         }
-                                        indexes.set(3, exactAnswer);
+                                        choiceArray[choiceArray.length-1] = exactAnswer;
 
-                                        Collections.shuffle(indexes);
+                                        choiceArray = questions.randomize_choices(choiceArray);
 
-                                        txtChoice1.setText(Integer.toString(indexes.get(0)));
-                                        txtChoice2.setText(Integer.toString(indexes.get(1)));
-                                        txtChoice3.setText(Integer.toString(indexes.get(2)));
-                                        txtChoice4.setText(Integer.toString(indexes.get(3)));
+                                        txtChoice1.setText(Integer.toString(choiceArray[0]));
+                                        txtChoice2.setText(Integer.toString(choiceArray[1]));
+                                        txtChoice3.setText(Integer.toString(choiceArray[2]));
+                                        txtChoice4.setText(Integer.toString(choiceArray[3]));
 
                                         remainingAttempt = questions.maxAttempt();
                                         ctr = 0;
@@ -277,17 +286,17 @@ public class AdditionGameActivity extends AppCompatActivity implements View.OnCl
                                         );
                                         exactAnswer = Integer.parseInt(txtNum1.getText().toString())
                                                 + Integer.parseInt(txtNum2.getText().toString());
-                                        for (int i = 0; i < 4; i++) {
-                                            indexes.add(questions.dummyChoices(exactAnswer));
+                                        for (int i = 0; i < choiceArray.length; i++) {
+                                            choiceArray[i]= questions.dummyChoices(exactAnswer);
                                         }
-                                        indexes.set(3, exactAnswer);
+                                        choiceArray[choiceArray.length-1] = exactAnswer;
 
-                                        Collections.shuffle(indexes);
+                                        choiceArray = questions.randomize_choices(choiceArray);
 
-                                        txtChoice1.setText(Integer.toString(indexes.get(0)));
-                                        txtChoice2.setText(Integer.toString(indexes.get(1)));
-                                        txtChoice3.setText(Integer.toString(indexes.get(2)));
-                                        txtChoice4.setText(Integer.toString(indexes.get(3)));
+                                        txtChoice1.setText(Integer.toString(choiceArray[0]));
+                                        txtChoice2.setText(Integer.toString(choiceArray[1]));
+                                        txtChoice3.setText(Integer.toString(choiceArray[2]));
+                                        txtChoice4.setText(Integer.toString(choiceArray[3]));
 
                                         remainingAttempt = questions.maxAttempt();
                                         ctr = 0;
