@@ -1,22 +1,12 @@
 package com.example.davetolentin.mathgame;
 
-import java.util.Random;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
-
 
 /**
  * Created by Dave Tolentin on 2/4/2017.
@@ -40,7 +30,6 @@ public class AdditionGameActivity extends AppCompatActivity implements View.OnCl
     private TextView txtChoice3;
     private TextView txtChoice4;
     private TextView txtAttempt;
-
 
     private int[] choiceArray = new int[4];
 
@@ -87,20 +76,16 @@ public class AdditionGameActivity extends AppCompatActivity implements View.OnCl
         exactAnswer = Integer.parseInt(txtNum1.getText().toString()) +
                 Integer.parseInt(txtNum2.getText().toString());
 
-        for(int c = 0;c<choiceArray.length-1;c++){
+        for (int c = 0;c < choiceArray.length - 1; c++) {
             choiceArray[c] = exactAnswer + c + 1;
-
         }
         choiceArray[choiceArray.length-1] = exactAnswer;
-        choiceArray  =  questions.randomize_choices(choiceArray);
-
-
+        choiceArray = questions.randomizeChoices(choiceArray);
 
         txtChoice1.setText(Integer.toString(choiceArray[0]));
         txtChoice2.setText(Integer.toString(choiceArray[1]));
         txtChoice3.setText(Integer.toString(choiceArray[2]));
         txtChoice4.setText(Integer.toString(choiceArray[3]));
-
     }
 
     @Override
@@ -133,9 +118,9 @@ public class AdditionGameActivity extends AppCompatActivity implements View.OnCl
                                         for (int i = 0; i < choiceArray.length; i++) {
                                             choiceArray[i]= questions.dummyChoices(exactAnswer);
                                         }
-                                        choiceArray[choiceArray.length-1] = exactAnswer;
+                                        choiceArray[choiceArray.length - 1] = exactAnswer;
 
-                                        choiceArray = questions.randomize_choices(choiceArray);
+                                        choiceArray = questions.randomizeChoices(choiceArray);
 
                                         txtChoice1.setText(Integer.toString(choiceArray[0]));
                                         txtChoice2.setText(Integer.toString(choiceArray[1]));
@@ -185,9 +170,9 @@ public class AdditionGameActivity extends AppCompatActivity implements View.OnCl
                                         for (int i = 0; i < choiceArray.length; i++) {
                                             choiceArray[i]= questions.dummyChoices(exactAnswer);
                                         }
-                                        choiceArray[choiceArray.length-1] = exactAnswer;
+                                        choiceArray[choiceArray.length - 1] = exactAnswer;
 
-                                        choiceArray = questions.randomize_choices(choiceArray);
+                                        choiceArray = questions.randomizeChoices(choiceArray);
 
                                         txtChoice1.setText(Integer.toString(choiceArray[0]));
                                         txtChoice2.setText(Integer.toString(choiceArray[1]));
@@ -237,9 +222,9 @@ public class AdditionGameActivity extends AppCompatActivity implements View.OnCl
                                         for (int i = 0; i < choiceArray.length; i++) {
                                             choiceArray[i]= questions.dummyChoices(exactAnswer);
                                         }
-                                        choiceArray[choiceArray.length-1] = exactAnswer;
+                                        choiceArray[choiceArray.length - 1] = exactAnswer;
 
-                                        choiceArray = questions.randomize_choices(choiceArray);
+                                        choiceArray = questions.randomizeChoices(choiceArray);
 
                                         txtChoice1.setText(Integer.toString(choiceArray[0]));
                                         txtChoice2.setText(Integer.toString(choiceArray[1]));
@@ -289,9 +274,9 @@ public class AdditionGameActivity extends AppCompatActivity implements View.OnCl
                                         for (int i = 0; i < choiceArray.length; i++) {
                                             choiceArray[i]= questions.dummyChoices(exactAnswer);
                                         }
-                                        choiceArray[choiceArray.length-1] = exactAnswer;
+                                        choiceArray[choiceArray.length - 1] = exactAnswer;
 
-                                        choiceArray = questions.randomize_choices(choiceArray);
+                                        choiceArray = questions.randomizeChoices(choiceArray);
 
                                         txtChoice1.setText(Integer.toString(choiceArray[0]));
                                         txtChoice2.setText(Integer.toString(choiceArray[1]));
